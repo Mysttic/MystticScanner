@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinFormsConsole.Models;
 
 namespace WinFormsConsole
 {
@@ -17,20 +18,21 @@ namespace WinFormsConsole
             InitializeComponent();
         }
 
-        public Form2(string item)
+        public Form2(ItemModel itemModel)
         {            
             InitializeComponent();
-            var items = item.Split(' ');
-            textBox1.Text = item.Replace(items[items.Count() - 1], "");
-            textBox2.Text = items[items.Count() - 1];
+            textBox1.Text = itemModel.Name;
+            textBox2.Text = itemModel.Key;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            textBox3.Text = "";            
+            richTextBox1.Text = "";            
             string result = Tools.VTInteractive.GetAnalysis(textBox2.Text);
             Task.Delay(1000);
-            textBox3.Text = result.Replace("\n","\r\n");
+            richTextBox1.Text = result.Replace("\n","\r\n");
+            Tools.Colors.ColorAllRichTextBoxFragment(ref richTextBox1);
+            Task.Delay(1000);
         }
     }
 }
