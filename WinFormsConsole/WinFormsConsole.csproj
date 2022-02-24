@@ -13,4 +13,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="vt.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

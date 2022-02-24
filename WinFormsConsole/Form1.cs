@@ -23,35 +23,43 @@ namespace WinFormsConsole
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Code();
+            listBox1.Items.Add(Tools.VTInteractive.ScanFile(file));
+        }
+        string file = @"C:\Program Files (x86)\Soneta\enova365_Integrator_od_wersji_15.3\enova.Integrator.UI.dll";
+        
+
+        private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Form2 form = new Form2(listBox1.SelectedItem.ToString());
+            form.Show();
         }
 
-        public async void Code()
-        {
-            await Task.Run(() => StartCode());
-        }
+        //public async void Code()
+        //{
+        //    await Task.Run(() => StartCode());
+        //}
 
-        public void StartCode()
-        {
-            int start = 1;
-            int step = 1;
-            int end = 5;
-            Process cmd = new Process();
-            cmd.StartInfo.FileName = "cmd.exe";
-            cmd.StartInfo.Arguments = $"/c  for /L %G IN ({start},{step},{end}) DO ( timeout 1 &echo Hello World %G >> WinFormsConsoleLog.txt ) ";
-            cmd.Start();    
-        }
+        //public void StartCode()
+        //{
+        //    int start = 1;
+        //    int step = 1;
+        //    int end = 5;
+        //    Process cmd = new Process();
+        //    cmd.StartInfo.FileName = "cmd.exe";
+        //    cmd.StartInfo.Arguments = $"/c  for /L %G IN ({start},{step},{end}) DO ( timeout 1 &echo Hello World %G >> WinFormsConsoleLog.txt ) ";
+        //    cmd.Start();    
+        //}
 
-        private void fileSystemWatcher1_Changed(object sender, FileSystemEventArgs e)
-        {
-            
-            textBox1.Invoke(new Action(delegate ()
-            {
-                var reader = new Tools.ReverseLineReader("WinFormsConsoleLog.txt");
-                    textBox1.AppendText(reader.First()+ Environment.NewLine);
-            }));
-                        
-        }
-                
+        //private void fileSystemWatcher1_Changed(object sender, FileSystemEventArgs e)
+        //{
+
+        //    textBox1.Invoke(new Action(delegate ()
+        //    {
+        //        var reader = new Tools.ReverseLineReader("WinFormsConsoleLog.txt");
+        //            textBox1.AppendText(reader.First()+ Environment.NewLine);
+        //    }));
+
+        //}
+
     }
 }
