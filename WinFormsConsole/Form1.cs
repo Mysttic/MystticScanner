@@ -25,6 +25,7 @@ namespace WinFormsConsole
             InitializeComponent();
             if (File.Exists("db.json"))
                 listBox1.Items.AddRange(JsonSerializer.Deserialize<List<ItemModelBase>>(File.ReadAllText("db.json")).ToArray());
+            MonitorDirectory(Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE"), "Downloads"));
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -36,18 +37,14 @@ namespace WinFormsConsole
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                string selectedFileName = openFileDialog1.FileName;
-                string result = Tools.VTInteractive.ScanFile(selectedFileName);
-                listBox1.Items.Add(new ItemModel(result));
-                //Models.Add(new ItemModel(result));
-                //Models = Models;
-                File.WriteAllText("db.json",JsonSerializer.Serialize(listBox1.Items.Cast<ItemModelBase>()));
+                AddItem(openFileDialog1.FileName);
             }            
         }
         
         private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            Form2 form = new Form2(listBox1.SelectedItem as ItemModel);
+            ItemModel item = listBox1.SelectedItem as ItemModel;
+            Form2 form = new Form2(item);
             form.Show();
         }
 
@@ -57,33 +54,61 @@ namespace WinFormsConsole
             //Models = Models;
             File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModelBase>()));
         }
+        private void AddItem(string name)
+        {
+            string result = Tools.VTInteractive.ScanFile(name);
+            listBox1.Items.Add(new ItemModel(result));
+            File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModelBase>()));
+            
+        }
+        private void UpdateItem(string name, string oldname)
+        {
+            var thisitem = listBox1.Items.Cast<ItemModelBase>()?.FirstOrDefault(i => i.NameKey.Contains(oldname));
+            int index = listBox1.Items.IndexOf(thisitem);
+            ItemModel item = listBox1.Items[index] as ItemModel;            
+            item.NameKey = item.NameKey.Replace(oldname, name);
+            listBox1.Items.RemoveAt(index);
+            listBox1.Items.Insert(index, item);
+            File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModelBase>()));
+        }
+        private void DeleteItem(string name)
+        {
+            int index = listBox1.Items.IndexOf(listBox1.Items.Cast<ItemModelBase>()?.FirstOrDefault(i => i.NameKey.Contains(name)));
+            listBox1.Items.RemoveAt(index);
+            //listBox1.Items.Remove(listBox1.Items.Cast<ItemModelBase>().FirstOrDefault(i => i.NameKey.Contains(name)));
+            File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModelBase>()));
+        }
 
-        //public async void Code()
-        //{
-        //    await Task.Run(() => StartCode());
-        //}
+        private void MonitorDirectory(string path)
 
-        //public void StartCode()
-        //{
-        //    int start = 1;
-        //    int step = 1;
-        //    int end = 5;
-        //    Process cmd = new Process();
-        //    cmd.StartInfo.FileName = "cmd.exe";
-        //    cmd.StartInfo.Arguments = $"/c  for /L %G IN ({start},{step},{end}) DO ( timeout 1 &echo Hello World %G >> WinFormsConsoleLog.txt ) ";
-        //    cmd.Start();    
-        //}
+        {
 
-        //private void fileSystemWatcher1_Changed(object sender, FileSystemEventArgs e)
-        //{
+            FileSystemWatcher fileSystemWatcher = new FileSystemWatcher();
 
-        //    textBox1.Invoke(new Action(delegate ()
-        //    {
-        //        var reader = new Tools.ReverseLineReader("WinFormsConsoleLog.txt");
-        //            textBox1.AppendText(reader.First()+ Environment.NewLine);
-        //    }));
+            fileSystemWatcher.Path = path;
 
-        //}
+            fileSystemWatcher.Created += FileSystemWatcher_Created;
+
+            fileSystemWatcher.Renamed += FileSystemWatcher_Renamed;
+
+            fileSystemWatcher.Deleted += FileSystemWatcher_Deleted;
+
+            fileSystemWatcher.EnableRaisingEvents = true;
+
+        }
+
+        private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)        {
+            listBox1.Invoke(new Action(delegate () { AddItem(e.FullPath); }));            
+        }
+
+        private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)        {
+            if (e.ChangeType == WatcherChangeTypes.Renamed)
+                listBox1.Invoke(new Action(delegate () { UpdateItem(e.Name, e.OldName); }));
+        }
+
+        private void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)        {
+            listBox1.Invoke(new Action(delegate () { DeleteItem(e.FullPath); }));            
+        }
 
     }
 }
