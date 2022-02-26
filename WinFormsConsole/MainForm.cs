@@ -13,19 +13,29 @@ using System.Windows.Forms;
 using System.Management.Automation;
 using WinFormsConsole.Models;
 using System.Text.Json;
+using static WinFormsConsole.Models.SettingsModel;
 
 namespace WinFormsConsole
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        //List<ItemModel> models;
-        //List<ItemModel> Models { get => models; set { models = value; listBox1.DataSource = value; listBox1.Refresh(); } }
-        public Form1()
+        public SettingsModel Settings { get; set; }
+        public MainForm()
         {
             InitializeComponent();
+            Init();
+        }
+
+        internal void Init()
+        {
+            listBox1.Items.Clear();
             if (File.Exists("db.json"))
-                listBox1.Items.AddRange(JsonSerializer.Deserialize<List<ItemModelBase>>(File.ReadAllText("db.json")).ToArray());
-            MonitorDirectory(Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE"), "Downloads"));
+                listBox1.Items.AddRange(JsonSerializer.Deserialize<List<ItemModel>>(File.ReadAllText("db.json")).ToArray());
+            if(File.Exists("settings.json"))
+                Settings = JsonSerializer.Deserialize<SettingsModel>(File.ReadAllText("settings.json"));
+            if(Settings != null)
+                foreach(MonitorDirectoryItem directory in Settings?.MonitorDirectories)
+                    MonitorDirectory(directory.Path); //MonitorDirectory(Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE"), "Downloads"));
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -44,7 +54,7 @@ namespace WinFormsConsole
         private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             ItemModel item = listBox1.SelectedItem as ItemModel;
-            Form2 form = new Form2(item);
+            ItemModelForm form = new ItemModelForm(item);
             form.Show();
         }
 
@@ -52,31 +62,36 @@ namespace WinFormsConsole
         {
             listBox1.Items.Remove(listBox1.SelectedItem);
             //Models = Models;
-            File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModelBase>()));
+            File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModel>()));
         }
         private void AddItem(string name)
         {
+            if (listBox1.Items.Contains(name))
+                return;
             string result = Tools.VTInteractive.ScanFile(name);
             listBox1.Items.Add(new ItemModel(result));
-            File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModelBase>()));
+            File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModel>()));
             
         }
         private void UpdateItem(string name, string oldname)
         {
-            var thisitem = listBox1.Items.Cast<ItemModelBase>()?.FirstOrDefault(i => i.NameKey.Contains(oldname));
+            var thisitem = listBox1.Items.Cast<ItemModel>()?.FirstOrDefault(i => i.NameKey.Contains(oldname));
             int index = listBox1.Items.IndexOf(thisitem);
-            ItemModel item = listBox1.Items[index] as ItemModel;            
+            Models.ItemModel item = listBox1.Items[index] as Models.ItemModel;            
             item.NameKey = item.NameKey.Replace(oldname, name);
             listBox1.Items.RemoveAt(index);
             listBox1.Items.Insert(index, item);
-            File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModelBase>()));
+            File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModel>()));
         }
         private void DeleteItem(string name)
         {
-            int index = listBox1.Items.IndexOf(listBox1.Items.Cast<ItemModelBase>()?.FirstOrDefault(i => i.NameKey.Contains(name)));
-            listBox1.Items.RemoveAt(index);
-            //listBox1.Items.Remove(listBox1.Items.Cast<ItemModelBase>().FirstOrDefault(i => i.NameKey.Contains(name)));
-            File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModelBase>()));
+            if (listBox1.Items.Count > 0)
+            {
+                int index = listBox1.Items.IndexOf(listBox1.Items.Cast<ItemModel>()?.FirstOrDefault(i => i.NameKey.Contains(name)));
+                listBox1.Items.RemoveAt(index);
+                //listBox1.Items.Remove(listBox1.Items.Cast<ItemModelBase>().FirstOrDefault(i => i.NameKey.Contains(name)));
+                File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModel>()));
+            }
         }
 
         private void MonitorDirectory(string path)
@@ -110,5 +125,10 @@ namespace WinFormsConsole
             listBox1.Invoke(new Action(delegate () { DeleteItem(e.FullPath); }));            
         }
 
+        private void SettingsBT_Click(object sender, EventArgs e)
+        {
+            SettingsForm form = new SettingsForm(this);
+            form.ShowDialog();
+        }
     }
 }

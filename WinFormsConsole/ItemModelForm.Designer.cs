@@ -1,7 +1,7 @@
 ﻿
 namespace WinFormsConsole
 {
-    partial class Form2
+    partial class ItemModelForm
     {
         /// <summary>
         /// Required designer variable.

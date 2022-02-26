@@ -6,17 +6,22 @@ using System.Threading.Tasks;
 
 namespace WinFormsConsole.Models
 {
-    public class ItemModel : ItemModelBase
+    public class ItemModel
     {
-        public ItemModel(string nameKey) : base(nameKey)
-        {
-        }
-
         public override string ToString()
         {
-            return Name + " - " + Key;
+            return NameKey;
         }
-        public string Name => NameKey.Replace(Key, "");
-        public string Key => NameKey.Split(' ').Last();
+        public ItemModel(string nameKey)
+        {
+            NameKey = nameKey;            
+        }
+
+        public string NameKey { get; set; }
+        
+        public string Analysis { get; set; }
+
+        internal string Name => NameKey.Replace(Key, "");
+        internal string Key => NameKey.Split(' ').Last();
     }
 }

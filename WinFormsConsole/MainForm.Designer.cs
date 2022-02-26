@@ -1,6 +1,6 @@
 ﻿namespace WinFormsConsole
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -32,6 +32,7 @@
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.SettingsBT = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -79,6 +80,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.SettingsBT);
             this.splitContainer1.Panel1.Controls.Add(this.button2);
             this.splitContainer1.Panel1.Controls.Add(this.button1);
             this.splitContainer1.Panel1.Cursor = System.Windows.Forms.Cursors.Arrow;
@@ -89,6 +91,17 @@
             this.splitContainer1.Size = new System.Drawing.Size(905, 466);
             this.splitContainer1.SplitterDistance = 187;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // SettingsBT
+            // 
+            this.SettingsBT.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.SettingsBT.Location = new System.Drawing.Point(0, 443);
+            this.SettingsBT.Name = "SettingsBT";
+            this.SettingsBT.Size = new System.Drawing.Size(187, 23);
+            this.SettingsBT.TabIndex = 2;
+            this.SettingsBT.Text = "Settings";
+            this.SettingsBT.UseVisualStyleBackColor = true;
+            this.SettingsBT.Click += new System.EventHandler(this.SettingsBT_Click);
             // 
             // button2
             // 
@@ -101,13 +114,13 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(905, 466);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -125,5 +138,6 @@
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button SettingsBT;
     }
 }

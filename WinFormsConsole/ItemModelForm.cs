@@ -11,14 +11,14 @@ using WinFormsConsole.Models;
 
 namespace WinFormsConsole
 {
-    public partial class Form2 : Form
+    public partial class ItemModelForm : Form
     {
-        public Form2()
+        public ItemModelForm()
         {
             InitializeComponent();
         }
 
-        public Form2(ItemModel itemModel)
+        public ItemModelForm(ItemModel itemModel)
         {            
             InitializeComponent();
             textBox1.Text = itemModel.Name;
