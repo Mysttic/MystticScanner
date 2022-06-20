@@ -5,6 +5,9 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
+    <Company>MystticSolutions</Company>
+    <PackageIcon>mysttic.ico</PackageIcon>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="mysttic.ico">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Update="vt.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

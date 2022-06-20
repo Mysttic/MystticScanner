@@ -29,9 +29,9 @@ namespace MystticScanner
 
         internal void Init()
         {
-            listBox1.Items.Clear();
+            ReportLB.Items.Clear();
             if (File.Exists("db.json"))
-                listBox1.Items.AddRange(JsonSerializer.Deserialize<List<ItemModel>>(File.ReadAllText("db.json")).ToArray());
+                ReportLB.Items.AddRange(JsonSerializer.Deserialize<List<ItemModel>>(File.ReadAllText("db.json")).ToArray());
             if(File.Exists("settings.json"))
                 Settings = JsonSerializer.Deserialize<SettingsModel>(File.ReadAllText("settings.json"));
             if(Settings != null)
@@ -39,7 +39,7 @@ namespace MystticScanner
                     MonitorDirectory(directory.Path); //MonitorDirectory(Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE"), "Downloads"));
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void SelectFileBT_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
@@ -52,49 +52,50 @@ namespace MystticScanner
             }            
         }
         
-        private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void ReportLB_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            ItemModel item = listBox1.SelectedItem as ItemModel;
+            ItemModel item = ReportLB.SelectedItem as ItemModel;
             ItemModelForm form = new ItemModelForm(item);
             form.Show();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void RemoveSelectedBT_Click(object sender, EventArgs e)
         {
-            listBox1.Items.Remove(listBox1.SelectedItem);
-            File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModel>()));
+            ReportLB.Items.Remove(ReportLB.SelectedItem);
+            File.WriteAllText("db.json", JsonSerializer.Serialize(ReportLB.Items.Cast<ItemModel>()));
         }
         private async void AddItem(string name)
         {
-            if (listBox1.Items.Contains(name))
+            if (ReportLB.Items.Contains(name))
                 return;
             if (String.IsNullOrEmpty(Settings.EnabledFileExtensions) ? false : !Settings.EnabledFileExtensions.Contains(Path.GetExtension(name)))
                 return;
             if (Settings.MaxFileSize == 0 ? false : Settings.MaxFileSize < (new FileInfo(name).Length / (1024 * 1024)))
                 return;
+            SystemSounds.Asterisk.Play();
             string result = await Task.Run(() => Tools.VTInteractive.ScanFile(name));
-            listBox1.Items.Add(new ItemModel(result));
-            File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModel>()));
+            ReportLB.Items.Add(new ItemModel(result));
+            File.WriteAllText("db.json", JsonSerializer.Serialize(ReportLB.Items.Cast<ItemModel>()));
             
         }
         private void UpdateItem(string name, string oldname)
         {
-            var thisitem = listBox1.Items.Cast<ItemModel>()?.FirstOrDefault(i => i.NameKey.Contains(oldname));
-            int index = listBox1.Items.IndexOf(thisitem);
-            ItemModel item = listBox1.Items[index] as ItemModel;            
+            var thisitem = ReportLB.Items.Cast<ItemModel>()?.FirstOrDefault(i => i.NameKey.Contains(oldname));
+            int index = ReportLB.Items.IndexOf(thisitem);
+            ItemModel item = ReportLB.Items[index] as ItemModel;            
             item.NameKey = item.NameKey.Replace(oldname, name);
-            listBox1.Items.RemoveAt(index);
-            listBox1.Items.Insert(index, item);
-            File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModel>()));
+            ReportLB.Items.RemoveAt(index);
+            ReportLB.Items.Insert(index, item);
+            File.WriteAllText("db.json", JsonSerializer.Serialize(ReportLB.Items.Cast<ItemModel>()));
         }
         private void DeleteItem(string name)
         {
-            if (listBox1.Items.Count > 0)
+            if (ReportLB.Items.Count > 0)
             {
-                int index = listBox1.Items.IndexOf(listBox1.Items.Cast<ItemModel>()?.FirstOrDefault(i => i.NameKey.Contains(name)));
-                listBox1.Items.RemoveAt(index);
+                int index = ReportLB.Items.IndexOf(ReportLB.Items.Cast<ItemModel>()?.FirstOrDefault(i => i.NameKey.Contains(name)));
+                ReportLB.Items.RemoveAt(index);
                 //listBox1.Items.Remove(listBox1.Items.Cast<ItemModelBase>().FirstOrDefault(i => i.NameKey.Contains(name)));
-                File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModel>()));
+                File.WriteAllText("db.json", JsonSerializer.Serialize(ReportLB.Items.Cast<ItemModel>()));
             }
         }
 
@@ -117,16 +118,16 @@ namespace MystticScanner
         }
 
         private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)        {
-            listBox1.Invoke(new Action(delegate () { AddItem(e.FullPath); SystemSounds.Asterisk.Play(); Console.WriteLine($"Add {e.FullPath}"); }));            
+            ReportLB.Invoke(new Action(delegate () { AddItem(e.FullPath); Console.WriteLine($"Add {e.FullPath}"); }));            
         }
 
         private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)        {
             if (e.ChangeType == WatcherChangeTypes.Renamed)
-                listBox1.Invoke(new Action(delegate () { UpdateItem(e.Name, e.OldName); Console.WriteLine($"Update {e.OldName}, {e.Name}"); }));
+                ReportLB.Invoke(new Action(delegate () { UpdateItem(e.Name, e.OldName); Console.WriteLine($"Update {e.OldName}, {e.Name}"); }));
         }
 
         private void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)        {
-            listBox1.Invoke(new Action(delegate () { DeleteItem(e.FullPath); Console.WriteLine($"Delete {e.FullPath}"); }));            
+            ReportLB.Invoke(new Action(delegate () { DeleteItem(e.FullPath); Console.WriteLine($"Delete {e.FullPath}"); }));            
         }
 
         private void SettingsBT_Click(object sender, EventArgs e)

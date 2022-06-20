@@ -48,7 +48,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(800, 162);
+            this.panel2.Size = new System.Drawing.Size(884, 162);
             this.panel2.TabIndex = 1;
             // 
             // dataGridView1
@@ -60,15 +60,18 @@
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(800, 162);
+            this.dataGridView1.Size = new System.Drawing.Size(884, 162);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             this.dataGridView1.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dataGridView1_RowsRemoved);
             // 
             // Path
             // 
+            this.Path.FillWeight = 1F;
             this.Path.HeaderText = "Path";
+            this.Path.MinimumWidth = 50;
             this.Path.Name = "Path";
+            this.Path.Width = 500;
             // 
             // panel1
             // 
@@ -80,7 +83,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 162);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(5);
-            this.panel1.Size = new System.Drawing.Size(800, 100);
+            this.panel1.Size = new System.Drawing.Size(884, 100);
             this.panel1.TabIndex = 2;
             // 
             // EnabledFileExtensionsTB
@@ -128,10 +131,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(884, 461);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(900, 500);
             this.Name = "SettingsForm";
             this.Text = "Settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsForm_FormClosing);
@@ -149,11 +153,11 @@
         private System.Windows.Forms.CheckedListBox checkedListBox1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Path;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox MaxFileSizeTB;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox EnabledFileExtensionsTB;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Path;
     }
 }

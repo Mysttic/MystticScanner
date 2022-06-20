@@ -45,7 +45,7 @@ namespace MystticScanner
             this.textBox2.Dock = System.Windows.Forms.DockStyle.Top;
             this.textBox2.Location = new System.Drawing.Point(0, 23);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(684, 23);
+            this.textBox2.Size = new System.Drawing.Size(784, 23);
             this.textBox2.TabIndex = 0;
             // 
             // textBox1
@@ -53,13 +53,13 @@ namespace MystticScanner
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.textBox1.Location = new System.Drawing.Point(0, 0);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(684, 23);
+            this.textBox1.Size = new System.Drawing.Size(784, 23);
             this.textBox1.TabIndex = 1;
             // 
             // button1
             // 
             this.button1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button1.Location = new System.Drawing.Point(684, 0);
+            this.button1.Location = new System.Drawing.Point(784, 0);
             this.button1.MaximumSize = new System.Drawing.Size(100, 50);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 50);
@@ -77,7 +77,7 @@ namespace MystticScanner
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.MinimumSize = new System.Drawing.Size(0, 50);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(784, 50);
+            this.panel1.Size = new System.Drawing.Size(884, 50);
             this.panel1.TabIndex = 4;
             // 
             // panel2
@@ -86,7 +86,7 @@ namespace MystticScanner
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 50);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(784, 318);
+            this.panel2.Size = new System.Drawing.Size(884, 411);
             this.panel2.TabIndex = 5;
             // 
             // richTextBox1
@@ -94,7 +94,7 @@ namespace MystticScanner
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBox1.Location = new System.Drawing.Point(0, 0);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(784, 318);
+            this.richTextBox1.Size = new System.Drawing.Size(884, 411);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
@@ -102,11 +102,11 @@ namespace MystticScanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 368);
+            this.ClientSize = new System.Drawing.Size(884, 461);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(800, 407);
+            this.MinimumSize = new System.Drawing.Size(900, 500);
             this.Name = "ItemModelForm";
             this.Text = "Report";
             this.panel1.ResumeLayout(false);
