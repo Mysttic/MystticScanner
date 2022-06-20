@@ -1,4 +1,4 @@
-﻿namespace WinFormsConsole
+﻿namespace MystticScanner
 {
     partial class MainForm
     {
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.button1 = new System.Windows.Forms.Button();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -46,7 +47,7 @@
             this.button1.Dock = System.Windows.Forms.DockStyle.Top;
             this.button1.Location = new System.Drawing.Point(0, 0);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(187, 23);
+            this.button1.Size = new System.Drawing.Size(158, 23);
             this.button1.TabIndex = 0;
             this.button1.Text = "Select file";
             this.button1.UseVisualStyleBackColor = true;
@@ -55,8 +56,8 @@
             // fileSystemWatcher1
             // 
             this.fileSystemWatcher1.EnableRaisingEvents = true;
-            this.fileSystemWatcher1.Path = "P:\\myLaboratory\\Projects\\VisualStudioProjects\\WinFormsConsole\\WinFormsConsole\\bin" +
-    "\\Debug\\net5.0-windows";
+            this.fileSystemWatcher1.Path = "P:\\myLaboratory\\Projects\\VisualStudioProjects\\MystticScanner\\MystticScanner\\bin\\D" +
+    "ebug\\net5.0-windows";
             this.fileSystemWatcher1.SynchronizingObject = this;
             // 
             // listBox1
@@ -67,7 +68,7 @@
             this.listBox1.ItemHeight = 15;
             this.listBox1.Location = new System.Drawing.Point(0, 0);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(714, 466);
+            this.listBox1.Size = new System.Drawing.Size(743, 466);
             this.listBox1.TabIndex = 1;
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
             // 
@@ -89,7 +90,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.listBox1);
             this.splitContainer1.Size = new System.Drawing.Size(905, 466);
-            this.splitContainer1.SplitterDistance = 187;
+            this.splitContainer1.SplitterDistance = 158;
             this.splitContainer1.TabIndex = 2;
             // 
             // SettingsBT
@@ -97,7 +98,7 @@
             this.SettingsBT.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.SettingsBT.Location = new System.Drawing.Point(0, 443);
             this.SettingsBT.Name = "SettingsBT";
-            this.SettingsBT.Size = new System.Drawing.Size(187, 23);
+            this.SettingsBT.Size = new System.Drawing.Size(158, 23);
             this.SettingsBT.TabIndex = 2;
             this.SettingsBT.Text = "Settings";
             this.SettingsBT.UseVisualStyleBackColor = true;
@@ -108,7 +109,7 @@
             this.button2.Dock = System.Windows.Forms.DockStyle.Top;
             this.button2.Location = new System.Drawing.Point(0, 23);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(187, 23);
+            this.button2.Size = new System.Drawing.Size(158, 23);
             this.button2.TabIndex = 1;
             this.button2.Text = "Remove selected";
             this.button2.UseVisualStyleBackColor = true;
@@ -120,8 +121,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(905, 466);
             this.Controls.Add(this.splitContainer1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "MystticScanner";
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);

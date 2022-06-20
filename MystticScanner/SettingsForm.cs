@@ -9,10 +9,10 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WinFormsConsole.Models;
-using static WinFormsConsole.Models.SettingsModel;
+using MystticScanner.Models;
+using static MystticScanner.Models.SettingsModel;
 
-namespace WinFormsConsole
+namespace MystticScanner
 {
     public partial class SettingsForm : Form
     {
@@ -31,6 +31,8 @@ namespace WinFormsConsole
                 dataGridView1.Rows.Add();
                 dataGridView1.Rows[i++].Cells["Path"].Value = item.Path;
             }
+            MaxFileSizeTB.Text = Settings.MaxFileSize.ToString();
+            EnabledFileExtensionsTB.Text = Settings.EnabledFileExtensions;
             MainForm = mainForm;
         }
 
@@ -55,6 +57,31 @@ namespace WinFormsConsole
         private void SettingsForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             MainForm.Init();
+        }
+
+        private void MaxFileSizeTB_TextChanged(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(MaxFileSizeTB.Text, "[^0-9]"))
+            {
+                MessageBox.Show("Please enter only numbers.");
+                MaxFileSizeTB.Text = MaxFileSizeTB.Text.Remove(MaxFileSizeTB.Text.Length - 1);
+            }
+
+            if (Settings != null)
+            {
+                long.TryParse(MaxFileSizeTB.Text, out long maxfilesize);
+                Settings.MaxFileSize = maxfilesize;
+                File.WriteAllText("settings.json", JsonSerializer.Serialize(Settings));
+            }
+        }
+
+        private void EnabledFileExtensionsTB_TextChanged(object sender, EventArgs e)
+        {
+            if (Settings != null)
+            {
+                Settings.EnabledFileExtensions = EnabledFileExtensionsTB.Text;
+                File.WriteAllText("settings.json", JsonSerializer.Serialize(Settings));
+            }
         }
     }
 }

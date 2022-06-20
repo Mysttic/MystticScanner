@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace WinFormsConsole
+namespace MystticScanner
 {
     public static class Tools
     {
@@ -23,6 +24,7 @@ namespace WinFormsConsole
             while (!process.HasExited)
             {
                 q += process.StandardOutput.ReadToEnd();
+                Console.WriteLine(q);
             }
             return q;
         }
@@ -30,7 +32,6 @@ namespace WinFormsConsole
         {
             public static string GetAnalysis(string key) => CmdInteractive(" analysis " + key);
             public static string ScanFile(string arguments) => CmdInteractive("scan file " + "\"" + arguments + "\"");
-
             public static string ScanURL(string arguments) => CmdInteractive("url " + arguments);
         }
         public static class Colors

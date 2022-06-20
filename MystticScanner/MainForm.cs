@@ -11,11 +11,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Management.Automation;
-using WinFormsConsole.Models;
+using MystticScanner.Models;
 using System.Text.Json;
-using static WinFormsConsole.Models.SettingsModel;
+using static MystticScanner.Models.SettingsModel;
+using System.Media;
 
-namespace WinFormsConsole
+namespace MystticScanner
 {
     public partial class MainForm : Form
     {
@@ -61,14 +62,17 @@ namespace WinFormsConsole
         private void button2_Click(object sender, EventArgs e)
         {
             listBox1.Items.Remove(listBox1.SelectedItem);
-            //Models = Models;
             File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModel>()));
         }
-        private void AddItem(string name)
+        private async void AddItem(string name)
         {
             if (listBox1.Items.Contains(name))
                 return;
-            string result = Tools.VTInteractive.ScanFile(name);
+            if (String.IsNullOrEmpty(Settings.EnabledFileExtensions) ? false : !Settings.EnabledFileExtensions.Contains(Path.GetExtension(name)))
+                return;
+            if (Settings.MaxFileSize == 0 ? false : Settings.MaxFileSize < (new FileInfo(name).Length / (1024 * 1024)))
+                return;
+            string result = await Task.Run(() => Tools.VTInteractive.ScanFile(name));
             listBox1.Items.Add(new ItemModel(result));
             File.WriteAllText("db.json", JsonSerializer.Serialize(listBox1.Items.Cast<ItemModel>()));
             
@@ -77,7 +81,7 @@ namespace WinFormsConsole
         {
             var thisitem = listBox1.Items.Cast<ItemModel>()?.FirstOrDefault(i => i.NameKey.Contains(oldname));
             int index = listBox1.Items.IndexOf(thisitem);
-            Models.ItemModel item = listBox1.Items[index] as Models.ItemModel;            
+            ItemModel item = listBox1.Items[index] as ItemModel;            
             item.NameKey = item.NameKey.Replace(oldname, name);
             listBox1.Items.RemoveAt(index);
             listBox1.Items.Insert(index, item);
@@ -113,16 +117,16 @@ namespace WinFormsConsole
         }
 
         private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)        {
-            listBox1.Invoke(new Action(delegate () { AddItem(e.FullPath); }));            
+            listBox1.Invoke(new Action(delegate () { AddItem(e.FullPath); SystemSounds.Asterisk.Play(); Console.WriteLine($"Add {e.FullPath}"); }));            
         }
 
         private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)        {
             if (e.ChangeType == WatcherChangeTypes.Renamed)
-                listBox1.Invoke(new Action(delegate () { UpdateItem(e.Name, e.OldName); }));
+                listBox1.Invoke(new Action(delegate () { UpdateItem(e.Name, e.OldName); Console.WriteLine($"Update {e.OldName}, {e.Name}"); }));
         }
 
         private void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)        {
-            listBox1.Invoke(new Action(delegate () { DeleteItem(e.FullPath); }));            
+            listBox1.Invoke(new Action(delegate () { DeleteItem(e.FullPath); Console.WriteLine($"Delete {e.FullPath}"); }));            
         }
 
         private void SettingsBT_Click(object sender, EventArgs e)
